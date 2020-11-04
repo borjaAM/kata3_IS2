@@ -6,6 +6,8 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
 
 public class HistogramDisplay extends ApplicationFrame {
@@ -22,7 +24,8 @@ public class HistogramDisplay extends ApplicationFrame {
     }
 
     private JPanel createPanel() {
-        ChartPanel chartPanel = new ChartPanel(createChart(createDataset()));
+        //ChartPanel chartPanel = new ChartPanel(createChart(createDataset())); // diagrama de barras
+        ChartPanel chartPanel = new ChartPanel(createPieChart3D(createPieDataset())); // diagrama de tarta
         return chartPanel;
     }
     
@@ -38,11 +41,23 @@ public class HistogramDisplay extends ApplicationFrame {
         return chart;
     }
     
+    private JFreeChart createPieChart3D(PieDataset dataSet){
+        JFreeChart pieChart = ChartFactory.createPieChart3D("JFreeChart PieChart", dataSet);
+        return pieChart;
+    }
     private DefaultCategoryDataset createDataset(){
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
         for (String key : histogram.keySet()) {
             dataSet.addValue(histogram.get(key), "", key);
         }
         return dataSet;
+    }
+    
+    private PieDataset createPieDataset(){
+        DefaultPieDataset pds = new DefaultPieDataset();
+        for (String key : histogram.keySet()) {
+            pds.setValue(key, histogram.get(key));
+        }
+        return pds;
     }
 }
